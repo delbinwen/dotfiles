@@ -15,6 +15,11 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'Raimondi/delimitMate'
+Plug 'sjl/vitality.vim'
+Plug 'gcmt/taboo.vim'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'rizzatti/dash.vim'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
 " Markup
 Plug 'plasticboy/vim-markdown'
