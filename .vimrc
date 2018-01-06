@@ -27,6 +27,9 @@ Plug 'plasticboy/vim-markdown'
 " Vim themes
 Plug 'dracula/vim', {'as': 'dracula'}
 
+" Go
+Plug 'fatih/vim-go'
+
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
