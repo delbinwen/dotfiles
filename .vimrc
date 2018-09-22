@@ -143,6 +143,7 @@ filetype plugin indent on
 "*****************************************************************************
 "" Basic Setup
 "*****************************************************************************"
+inoremap jk <ESC>
 "" Encoding
 set encoding=utf-8
 set fileencoding=utf-8
@@ -160,8 +161,8 @@ set softtabstop=0
 set shiftwidth=4
 set expandtab
 
-"" Map leader to ,
-let mapleader=','
+"" Map leader to Space 
+let mapleader='<Space>'
 
 "" Enable hidden buffers
 set hidden
