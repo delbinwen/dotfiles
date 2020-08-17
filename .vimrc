@@ -99,14 +99,21 @@ Plug 'mattn/emmet-vim'
 
 " javascript
 "" Javascript Bundle
-Plug 'jelera/vim-javascript-syntax'
+Plug 'pangloss/vim-javascript'
 
+" typescript
+Plug 'leafgarland/typescript-vim'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'neoclide/coc.nvim' , { 'branch' : 'release' }
 
 " python
 "" Python Bundle
 Plug 'davidhalter/jedi-vim'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 
+
+" graphql
+Plug 'jparise/vim-graphql'
 
 " ruby
 Plug 'tpope/vim-rails'
@@ -575,6 +582,9 @@ augroup vimrc-javascript
 augroup END
 
 
+" CoC extensions
+let g:coc_global_extensions = [ 'coc-tsserver' ]
+
 " python
 " vim-python
 augroup vimrc-python
@@ -674,6 +684,7 @@ if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 
+let g:airline_powerline_fonts = 1
 if !exists('g:airline_powerline_fonts')
   let g:airline#extensions#tabline#left_sep = ' '
   let g:airline#extensions#tabline#left_alt_sep = '|'
