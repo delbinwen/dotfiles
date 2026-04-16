@@ -1,82 +1,9 @@
 # ~/.zshrc.local
-# 個人客製化配置
-
-# ============================================
-# Google Cloud SDK (installed via Homebrew)
-# ============================================
-
-# 添加 gcloud 到 PATH
-export PATH="/opt/homebrew/share/google-cloud-sdk/bin:$PATH"
-
-# 啟用 shell 命令補全（如果存在）
-if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then
-  source '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'
-fi
-
-# 可選：GCloud 相關別名
-alias gcp='gcloud'
-alias gcl='gcloud compute instances list'
-alias gcs='gcloud compute ssh'
-alias gke='gcloud container clusters'
-alias gssh='gcloud compute ssh'
-
-# ============================================
-# 專案路徑（依需求修改）
-# ============================================
-
-# export PROJECT_HOME="$HOME/projects"
-# export WORK_HOME="$HOME/work"
-
-# 快速跳轉別名
-# alias cdwork='cd $WORK_HOME'
-# alias cdproj='cd $PROJECT_HOME'
-
-# ============================================
-# 自定義函數
-# ============================================
-
-# 快速切換 GCP 專案
-gcp-switch() {
-    if [ -z "$1" ]; then
-        echo "目前專案: $(gcloud config get-value project)"
-        echo ""
-        echo "可用專案："
-        gcloud projects list
-    else
-        gcloud config set project "$1"
-        echo "已切換到專案: $1"
-    fi
-}
-
-# 快速查看 GCP 資源
-gcp-status() {
-    echo "🔍 GCP 資源概覽"
-    echo "=================="
-    echo ""
-    echo "📌 目前專案: $(gcloud config get-value project)"
-    echo "📌 目前帳號: $(gcloud config get-value account)"
-    echo "📌 目前區域: $(gcloud config get-value compute/region)"
-    echo "📌 目前地區: $(gcloud config get-value compute/zone)"
-    echo ""
-    echo "💻 Compute Instances:"
-    gcloud compute instances list --limit=5
-}
-
-# ============================================
-# 其他工具配置
-# ============================================
-
-# 在此加入其他個人工具的配置
-# 例如: AWS CLI, Docker, Node.js 版本管理器等
-
-# ============================================
-# 私密資訊（絕對不要提交到 git！）
-# ============================================
-
-# 如果需要設定 API keys 或 tokens，在這裡加入
-# export MY_API_KEY="your-secret-key"
-# export GITHUB_TOKEN="your-token"
-
-# 注意：考慮使用 .zshrc.secret 來存放真正的私密資訊
-# 然後在這裡 source：
-# [[ -f ~/.zshrc.secret ]] && source ~/.zshrc.secret
+# 機器專屬設定（不同電腦的差異部分）
+# 此檔案由 .zshrc 載入，適合放：
+#   - 特定電腦的路徑
+#   - 私密資訊（不要提交到 git）
+#   - 只在這台機器需要的工具設定
+#
+# 私密資訊建議用 Keychain 存取，例如：
+#   export MY_TOKEN=$(security find-generic-password -a "$USER" -s "MY_TOKEN" -w)

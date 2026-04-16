@@ -79,6 +79,12 @@ zinit snippet OMZP::node
 zinit snippet OMZP::kubectl
 zinit snippet OMZP::terraform
 
+# Google Cloud SDK (installed via Homebrew)
+export PATH="/opt/homebrew/share/google-cloud-sdk/bin:$PATH"
+if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then
+  source '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'
+fi
+
 # ============================================
 # 生產力工具
 # ============================================
@@ -166,6 +172,13 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
+# GCP
+alias gcp='gcloud'
+alias gcl='gcloud compute instances list'
+alias gcs='gcloud compute ssh'
+alias gke='gcloud container clusters'
+alias gssh='gcloud compute ssh'
+
 # ============================================
 # 環境變數
 # ============================================
@@ -181,6 +194,23 @@ export LC_ALL=zh_TW.UTF-8
 # 開發相關路徑 (根據需要調整)
 # export PATH="$HOME/.local/bin:$PATH"
 # export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# Python
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# Node.js (nvm)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# PostgreSQL (libpq)
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+# ClickUp API token
+export CLICKUP_API_TOKEN=$(security find-generic-password -a "$USER" -s "CLICKUP_API_TOKEN" -w 2>/dev/null)
 
 # ============================================
 # 按鍵綁定
@@ -214,6 +244,30 @@ dirsize() {
     du -sh "${1:-.}" | cut -f1
 }
 
+# 快速切換 GCP 專案
+gcp-switch() {
+    if [ -z "$1" ]; then
+        echo "目前專案: $(gcloud config get-value project)"
+        echo ""
+        echo "可用專案："
+        gcloud projects list
+    else
+        gcloud config set project "$1"
+        echo "已切換到專案: $1"
+    fi
+}
+
+# 快速查看 GCP 資源
+gcp-status() {
+    echo "目前專案: $(gcloud config get-value project)"
+    echo "目前帳號: $(gcloud config get-value account)"
+    echo "目前區域: $(gcloud config get-value compute/region)"
+    echo "目前地區: $(gcloud config get-value compute/zone)"
+    echo ""
+    echo "Compute Instances:"
+    gcloud compute instances list --limit=5
+}
+
 # ============================================
 # Powerlevel10k 設定
 # ============================================
@@ -231,3 +285,5 @@ dirsize() {
 # echo "✨ Zinit 配置載入完成！"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
