@@ -209,8 +209,6 @@ export NVM_DIR="$HOME/.nvm"
 # PostgreSQL (libpq)
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
-# ClickUp API token
-export CLICKUP_API_TOKEN=$(security find-generic-password -a "$USER" -s "CLICKUP_API_TOKEN" -w 2>/dev/null)
 
 # ============================================
 # 按鍵綁定
