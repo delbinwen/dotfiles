@@ -34,6 +34,8 @@ SAVEHIST=10000
 HISTFILE=~/.zsh_history
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_FIND_NO_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt EXTENDED_HISTORY
 setopt SHARE_HISTORY
 
 # ============================================
@@ -130,7 +132,11 @@ zinit snippet OMZP::web-search
 
 # 載入補全系統
 autoload -Uz compinit
-compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
 # 補全選單
 zstyle ':completion:*' menu select
@@ -142,9 +148,16 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # ============================================
 
 # 基本別名
-alias ll='ls -lah'
-alias la='ls -A'
-alias l='ls -CF'
+if command -v eza &>/dev/null; then
+  alias ll='eza -lah --git'
+  alias la='eza -A'
+  alias l='eza -F'
+  alias lt='eza --tree --level=2'
+else
+  alias ll='ls -lah'
+  alias la='ls -A'
+  alias l='ls -CF'
+fi
 
 # Git 別名 (補充)
 alias gs='git status'
@@ -160,7 +173,6 @@ alias zshreload='source ~/.zshrc'
 
 # 開發工具
 alias py='python3'
-alias pip='pip3'
 
 # Docker 快捷指令
 alias dps='docker ps'
@@ -173,11 +185,9 @@ alias cp='cp -i'
 alias mv='mv -i'
 
 # GCP
-alias gcp='gcloud'
 alias gcl='gcloud compute instances list'
 alias gcs='gcloud compute ssh'
 alias gke='gcloud container clusters'
-alias gssh='gcloud compute ssh'
 
 # ============================================
 # 環境變數
@@ -201,10 +211,17 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-# Node.js (nvm)
+# Node.js (nvm) - lazy load for faster startup
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+_load_nvm() {
+  unfunction nvm node npm npx 2>/dev/null
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+}
+nvm() { _load_nvm; nvm "$@" }
+node() { _load_nvm; node "$@" }
+npm() { _load_nvm; npm "$@" }
+npx() { _load_nvm; npx "$@" }
 
 # PostgreSQL (libpq)
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
@@ -284,7 +301,5 @@ gcp-status() {
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
 # echo "✨ Zinit 配置載入完成！"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
