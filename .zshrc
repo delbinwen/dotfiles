@@ -170,6 +170,7 @@ alias glog='git log --oneline --graph --decorate'
 # 快速編輯配置
 alias zshconfig='${EDITOR:-vim} ~/.zshrc'
 alias zshreload='source ~/.zshrc'
+alias zupdate='zinit self-update && zinit update --all'
 
 # 開發工具
 alias py='python3'
