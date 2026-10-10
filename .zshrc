@@ -210,7 +210,7 @@ export PATH="$HOME/.local/bin:$PATH"
 # Python
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+command -v pyenv &>/dev/null && eval "$(pyenv init -)"
 
 # Node.js (nvm) - lazy load for faster startup
 export NVM_DIR="$HOME/.nvm"
