@@ -303,3 +303,4 @@ gcp-status() {
 # echo "✨ Zinit 配置載入完成！"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+export PATH="/Library/TeX/texbin:$PATH"
