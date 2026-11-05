@@ -228,7 +228,6 @@ npx() { _load_nvm; command npx "$@" }
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # Claude Code
-export CLAUDE_CODE_EFFORT_LEVEL=max
 export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
 
 # ============================================
