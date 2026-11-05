@@ -117,8 +117,10 @@ set softtabstop=0
 set shiftwidth=4
 set expandtab
 
-"" Map leader to ,
-let mapleader=','
+"" Leader 用空白鍵；單按空白鍵不要移動游標
+let mapleader="\<Space>"
+nnoremap <Space> <Nop>
+xnoremap <Space> <Nop>
 
 "" Enable hidden buffers
 set hidden
@@ -316,7 +318,7 @@ noremap <Leader>gb :Git blame<CR>
 noremap <Leader>gd :Gvdiffsplit<CR>
 noremap <Leader>gr :GDelete<CR>
 
-"" gitgutter：不用它預設的 ,h 開頭快捷鍵，避免跟 ,h（分割視窗）衝突
+"" gitgutter：不用它預設的 <Leader>h 開頭快捷鍵，避免跟 <Leader>h（分割視窗）衝突
 let g:gitgutter_map_keys = 0
 nmap ]c <Plug>(GitGutterNextHunk)
 nmap [c <Plug>(GitGutterPrevHunk)
@@ -462,9 +464,9 @@ augroup END
 
 " jedi-vim
 let g:jedi#popup_on_dot = 0
-" ,a 而不是 ,g，避免跟 ,g 開頭的 Git 快捷鍵衝突
+" <Leader>a 而不是 <Leader>g，避免跟 <Leader>g 開頭的 Git 快捷鍵衝突
 let g:jedi#goto_assignments_command = "<leader>a"
-" 不用 ,s（跳到 stub），避免跟 ,s 開頭的 session 快捷鍵衝突
+" 不用 <Leader>s（跳到 stub），避免跟 <Leader>s 開頭的 session 快捷鍵衝突
 let g:jedi#goto_stubs_command = ""
 let g:jedi#goto_definitions_command = "<leader>d"
 let g:jedi#documentation_command = "K"
