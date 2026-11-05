@@ -46,7 +46,7 @@ for f in .zshenv .zprofile .zshrc .zshrc.local .p10k.zsh; do ln -s "$PWD/$f" ~/"
 
 ## Vim 常用快捷鍵
 
-Leader 鍵是 `,`。
+Leader 鍵是 `,`。新增快捷鍵時，不要讓一個快捷鍵剛好是另一個的開頭（例如同時有 `,g` 和 `,gs`），否則按短的那個時 vim 會等 1 秒。
 
 | 按鍵 | 功能 |
 |---|---|
@@ -57,7 +57,7 @@ Leader 鍵是 `,`。
 | `,e` | 用 fzf 找檔案 |
 | `,b` | 用 fzf 切換已開啟的 buffer |
 | `,y` | 用 fzf 搜尋指令歷史 |
-| `:Find 文字` | 用 ripgrep 在專案中搜尋 |
+| `,f` | 用 ripgrep 搜尋專案內容（輸入要找的文字後按 Enter） |
 | `,<空白>` | 清除搜尋高亮 |
 | **視窗、分頁、buffer** | |
 | `,h` / `,v` | 水平 / 垂直分割視窗 |
@@ -71,17 +71,21 @@ Leader 鍵是 `,`。
 | `gcc` / `gc`（選取後） | 註解或取消註解 |
 | `J` / `K`（選取後） | 把選取的行往下 / 往上移 |
 | `Tab`（插入模式） | 展開 snippet、跳到下一個欄位；`Ctrl-b` 跳回上一個 |
+| `y` / `p` | 直接複製到 / 貼上自系統剪貼簿 |
 | `:FixWhitespace` | 刪除行尾空白 |
 | **Git（fugitive）** | |
 | `,gs` | Git 狀態 |
 | `,ga` | `git add` 目前檔案 |
 | `,gc` | commit |
-| `,gsh` / `,gll` | push / pull |
+| `,gp` / `,gl` | push / pull |
 | `,gb` | blame |
 | `,gd` | 左右對照目前檔案還沒 `git add` 的修改 |
 | `,o` | 在 GitHub 開啟目前這一行 |
+| `]c` / `[c` | 跳到下一個 / 上一個修改區塊 |
+| `,ghs` / `,ghu` / `,ghp` | 暫存 / 復原 / 預覽游標所在的修改區塊 |
 | **Python（jedi-vim）** | |
 | `,d` | 跳到定義 |
+| `,a` | 跳到賦值的地方 |
 | `,n` | 列出所有使用處 |
 | `,r` | 重新命名 |
 | `K` | 查看文件 |

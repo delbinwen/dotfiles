@@ -10,11 +10,6 @@ else
   let curl_exists=expand('curl')
 endif
 
-let g:vim_bootstrap_langs = "javascript,python,typescript"
-let g:vim_bootstrap_editor = "vim"				" nvim or vim
-let g:vim_bootstrap_theme = "dracula"
-let g:vim_bootstrap_frams = ""
-
 if !filereadable(vimplug_exists)
   if !executable(curl_exists)
     echoerr "You have to install curl or first install vim-plug yourself!"
@@ -34,21 +29,16 @@ call plug#begin(expand('~/.vim/plugged'))
 "*****************************************************************************
 "" Plug install packages
 "*****************************************************************************
-Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
+Plug 'preservim/nerdtree'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
-Plug 'vim-scripts/grep.vim'
-Plug 'vim-scripts/CSApprox'
 Plug 'Raimondi/delimitMate'
-Plug 'majutsushi/tagbar'
+Plug 'preservim/tagbar'
 Plug 'dense-analysis/ale'
-Plug 'Yggdroot/indentLine'
-Plug 'editor-bootstrap/vim-bootstrap-updater'
-Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
+Plug 'tpope/vim-rhubarb' " required by fugitive to :GBrowse
 Plug 'dracula/vim', { 'as': 'dracula' }
 
 
@@ -58,11 +48,6 @@ else
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
   Plug 'junegunn/fzf.vim'
 endif
-let g:make = 'gmake'
-if exists('make')
-        let g:make = 'make'
-endif
-Plug 'Shougo/vimproc.vim', {'do': g:make}
 
 "" Vim-Session
 Plug 'xolox/vim-misc'
@@ -76,11 +61,6 @@ Plug 'honza/vim-snippets'
 "" Custom bundles
 "*****************************************************************************
 
-" javascript
-"" Javascript Bundle
-Plug 'jelera/vim-javascript-syntax'
-
-
 " python
 "" Python Bundle
 Plug 'davidhalter/jedi-vim'
@@ -88,7 +68,6 @@ Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 
 
 " typescript
-Plug 'leafgarland/typescript-vim'
 Plug 'HerringtonDarkholme/yats.vim'
 
 
@@ -114,7 +93,20 @@ inoremap jk <ESC>
 set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
-set ttyfast
+
+"" 按 Esc 不要等一秒才離開插入模式
+set ttimeout
+set ttimeoutlen=50
+
+"" 關掉檔案再打開也能 undo
+set undofile
+set undodir=~/.vim/undo//
+if !isdirectory(expand('~/.vim/undo'))
+  call mkdir(expand('~/.vim/undo'), 'p')
+endif
+
+"" gitgutter 等外掛更新得更快
+set updatetime=300
 
 "" Fix backspace indent
 set backspace=indent,eol,start
@@ -164,7 +156,6 @@ silent! colorscheme dracula
 
 
 set mousemodel=popup
-set t_Co=256
 set guioptions=egmrti
 set gfn=Monospace\ 10
 
@@ -173,24 +164,20 @@ if has("gui_running")
     set guifont=Menlo:h12
     set transparency=7
   endif
-else
-  let g:CSApprox_loaded = 1
+endif
 
-  " IndentLine
-  let g:indentLine_enabled = 1
-  let g:indentLine_concealcursor = ''
-  let g:indentLine_char = '┆'
-  let g:indentLine_faster = 1
+"" 全彩（iTerm2 支援），dracula 會顯示正確的顏色
+if has('termguicolors')
+  set termguicolors
+endif
 
-  
-  if $COLORTERM == 'gnome-terminal'
-    set term=gnome-256color
-  else
-    if $TERM == 'xterm'
-      set term=xterm-256color
-    endif
-  endif
-  
+"" 左側標記欄固定顯示，gitgutter 或 ALE 出現標記時文字不會跳動
+set signcolumn=yes
+
+"" 縮排參考線（取代 indentLine 外掛）
+if has('patch-8.2.5066')
+  set list
+  set listchars=tab:┆\ ,leadmultispace:┆\ \ \ ,nbsp:␣
 endif
 
 
@@ -223,10 +210,6 @@ set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-if exists("*fugitive#statusline")
-  set statusline+=%{fugitive#statusline()}
-endif
-
 " vim-airline
 let g:airline_theme = 'powerlineish'
 let g:airline#extensions#branch#enabled = 1
@@ -255,18 +238,14 @@ let g:NERDTreeChDirMode=2
 let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
 let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
 let g:NERDTreeShowBookmarks=1
-let g:nerdtree_tabs_focus_on_files=1
 let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
 let g:NERDTreeWinSize = 50
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 nnoremap <silent> <F2> :NERDTreeFind<CR>
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 
-" grep.vim
-nnoremap <silent> <leader>f :Rgrep<CR>
-let Grep_Default_Options = '-IR'
-let Grep_Skip_Files = '*.log *.db'
-let Grep_Skip_Dirs = '.git node_modules'
+" 用 ripgrep 搜尋專案內容（取代 grep.vim 外掛）
+nnoremap <leader>f :Rg<Space>
 
 " terminal emulation
 nnoremap <silent> <leader>sh :terminal<CR>
@@ -330,12 +309,20 @@ noremap <Leader>v :<C-u>vsplit<CR>
 "" Git
 noremap <Leader>ga :Gwrite<CR>
 noremap <Leader>gc :Git commit --verbose<CR>
-noremap <Leader>gsh :Git push<CR>
-noremap <Leader>gll :Git pull<CR>
+noremap <Leader>gp :Git push<CR>
+noremap <Leader>gl :Git pull<CR>
 noremap <Leader>gs :Git<CR>
 noremap <Leader>gb :Git blame<CR>
 noremap <Leader>gd :Gvdiffsplit<CR>
 noremap <Leader>gr :GDelete<CR>
+
+"" gitgutter：不用它預設的 ,h 開頭快捷鍵，避免跟 ,h（分割視窗）衝突
+let g:gitgutter_map_keys = 0
+nmap ]c <Plug>(GitGutterNextHunk)
+nmap [c <Plug>(GitGutterPrevHunk)
+nmap <Leader>ghs <Plug>(GitGutterStageHunk)
+nmap <Leader>ghu <Plug>(GitGutterUndoHunk)
+nmap <Leader>ghp <Plug>(GitGutterPreviewHunk)
 
 " session management
 nnoremap <leader>so :OpenSession<Space>
@@ -398,8 +385,12 @@ if has('autocmd')
 endif
 
 "" Copy/Paste/Cut
-if has('unnamedplus')
-  set clipboard=unnamed,unnamedplus
+"" 複製、貼上直接用系統剪貼簿（macOS 沒有 unnamedplus）
+if has('clipboard')
+  set clipboard=unnamed
+  if has('unnamedplus')
+    set clipboard+=unnamedplus
+  endif
 endif
 
 noremap YY "+y<CR>
@@ -454,9 +445,6 @@ augroup END
 
 
 " javascript
-let g:javascript_enable_domhtmlcss = 1
-
-" vim-javascript
 augroup vimrc-javascript
   autocmd!
   autocmd FileType javascript setl tabstop=4|setl shiftwidth=4|setl expandtab softtabstop=4
@@ -474,7 +462,10 @@ augroup END
 
 " jedi-vim
 let g:jedi#popup_on_dot = 0
-let g:jedi#goto_assignments_command = "<leader>g"
+" ,a 而不是 ,g，避免跟 ,g 開頭的 Git 快捷鍵衝突
+let g:jedi#goto_assignments_command = "<leader>a"
+" 不用 ,s（跳到 stub），避免跟 ,s 開頭的 session 快捷鍵衝突
+let g:jedi#goto_stubs_command = ""
 let g:jedi#goto_definitions_command = "<leader>d"
 let g:jedi#documentation_command = "K"
 let g:jedi#usages_command = "<leader>n"
