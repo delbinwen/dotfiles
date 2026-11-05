@@ -164,7 +164,8 @@ set ruler
 set number
 
 let no_buffers_menu=1
-colorscheme dracula
+" silent! 避免第一次開 vim、外掛還沒裝好時出現 E185
+silent! colorscheme dracula
 
 
 set mousemodel=popup
@@ -334,12 +335,12 @@ noremap <Leader>v :<C-u>vsplit<CR>
 "" Git
 noremap <Leader>ga :Gwrite<CR>
 noremap <Leader>gc :Git commit --verbose<CR>
-noremap <Leader>gsh :Gpush<CR>
-noremap <Leader>gll :Gpull<CR>
-noremap <Leader>gs :Gstatus<CR>
-noremap <Leader>gb :Gblame<CR>
-noremap <Leader>gd :Gvdiff<CR>
-noremap <Leader>gr :Gremove<CR>
+noremap <Leader>gsh :Git push<CR>
+noremap <Leader>gll :Git pull<CR>
+noremap <Leader>gs :Git<CR>
+noremap <Leader>gb :Git blame<CR>
+noremap <Leader>gd :Gvdiffsplit<CR>
+noremap <Leader>gr :GDelete<CR>
 
 " session management
 nnoremap <leader>so :OpenSession<Space>
@@ -354,9 +355,6 @@ nnoremap <silent> <S-t> :tabnew<CR>
 
 "" Set working directory
 nnoremap <leader>. :lcd %:p:h<CR>
-
-"" Opens an edit command with the path of the currently edited file filled in
-noremap <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
 "" Opens a tab edit command with the path of the currently edited file filled
 noremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
@@ -446,7 +444,7 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 "" Open current line on GitHub
-nnoremap <Leader>o :.Gbrowse<CR>
+nnoremap <Leader>o :.GBrowse<CR>
 
 "*****************************************************************************
 "" Custom configs
